@@ -1,4 +1,4 @@
-package de.mckracken.mft.Manager
+package de.mckracken.mft.manager
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -6,14 +6,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.startActivityForResult
-import kotlinx.android.synthetic.main.activity_main.*
 import java.io.UnsupportedEncodingException
 
 class CustomBluetoothManager (applicationContext: Context) {

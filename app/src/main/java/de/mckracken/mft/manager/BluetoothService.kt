@@ -1,4 +1,4 @@
-package de.mckracken.mft.Manager
+package de.mckracken.mft.manager
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
