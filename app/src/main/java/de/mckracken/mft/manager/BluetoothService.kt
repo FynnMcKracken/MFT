@@ -29,7 +29,7 @@ class BluetoothService(private val handler: Handler) {
         get() = bluetoothAdapter?.isEnabled
 
     fun disable(){
-        if (bluetoothAdapter != null) bluetoothAdapter.disable()
+        bluetoothAdapter?.disable()
     }
 
     val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
@@ -91,7 +91,7 @@ class BluetoothService(private val handler: Handler) {
 
         override fun run() {
             var numBytes: Int // bytes returned from read()
-            var stringBuilder = StringBuilder()
+            val stringBuilder = StringBuilder()
 
             // Keep listening to the InputStream until an exception occurs.
             while (true) {

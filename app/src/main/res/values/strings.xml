@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MFT</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_bluetooth">Bluetooth</string>
     <string name="title_list">List</string>
+    <string name="bluetooth_devices">Sichtbare Geräte</string>
 </resources>

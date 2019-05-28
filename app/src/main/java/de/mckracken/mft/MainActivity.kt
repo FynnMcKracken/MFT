@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import de.mckracken.mft.fragments.BluetoothFragment
 import de.mckracken.mft.fragments.ListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,7 +15,8 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_home -> {
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
+            R.id.navigation_bluetooth -> {
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, BluetoothFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_list -> {

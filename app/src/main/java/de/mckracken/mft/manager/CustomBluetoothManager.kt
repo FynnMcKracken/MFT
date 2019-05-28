@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
 import android.os.Message
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.UnsupportedEncodingException
@@ -17,24 +18,15 @@ class CustomBluetoothManager (applicationContext: Context) {
     private var message : String? = null
     private var connectionStatus : String? = null
     private var bluetoothStatus : String? = null
-    private var devicesArray : ArrayList<String>? = null
+    private var devicesArray : ArrayList<BluetoothDevice>? = null
+    private var blReceiver : BroadcastReceiver? = null
     private val applicationContext : Context = applicationContext
-    private val blReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action
-            if (BluetoothDevice.ACTION_FOUND == action) {
-                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                // add the name to the list
-                devicesArray?.add(device.name + "\n" + device.address)
-            }
-        }
-    }
 
     init {
         initializeBluetoothService()
     }
 
-    fun initializeBluetoothService(){
+    private fun initializeBluetoothService(){
         val handler = object: Handler() {
             override fun handleMessage(msg: Message) {
                 when(msg.what){
@@ -52,11 +44,16 @@ class CustomBluetoothManager (applicationContext: Context) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
         }
-        bluetoothStatus = "Bluetooth enabled"
+//        bluetoothStatus = "Bluetooth enabled"
+        Toast.makeText(applicationContext, "Bluetooth enabled", Toast.LENGTH_SHORT).show()
     }
     fun bluetoothOff(){
         bluetoothService?.disable()
-        bluetoothStatus = "Bluetooth disabled"
+//        bluetoothStatus = "Bluetooth disabled"
+        Toast.makeText(applicationContext, "Bluetooth disabled", Toast.LENGTH_SHORT).show()
+    }
+    fun isBluetoothEnabled() : Boolean {
+        return  bluetoothService != null && bluetoothService?.enabled == true
     }
 
     fun messageRead(msg: Message){
@@ -80,21 +77,29 @@ class CustomBluetoothManager (applicationContext: Context) {
         return connectionStatus
     }
 
-    fun getDevices() : ArrayList<String>? {
+    fun getDevices() : ArrayList<BluetoothDevice>? {
         return devicesArray
     }
 
-    fun discoverPairedDevices(){
-        bluetoothService?.discover()
-        Toast.makeText(applicationContext, "Discovering Paired Devices", Toast.LENGTH_SHORT).show()
-        devicesArray?.clear()
-        applicationContext.registerReceiver(blReceiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
+    fun setReceiver(receiver: BroadcastReceiver) {
+        blReceiver = receiver
     }
 
-    fun showPairedDevices() : ArrayList<String>? {
+    fun discoverDevices(){
+        if (bluetoothService?.enabled!!) {
+            bluetoothService?.discover()
+            Toast.makeText(applicationContext, "Discovering Paired Devices", Toast.LENGTH_SHORT).show()
+            devicesArray?.clear()
+            applicationContext.registerReceiver(blReceiver, IntentFilter(BluetoothDevice.ACTION_FOUND))
+        } else {
+            Toast.makeText(applicationContext, "Bluetooth not on", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun showPairedDevices() : ArrayList<BluetoothDevice>? {
         if (bluetoothService?.enabled!!) {
             for (device in bluetoothService?.pairedDevices!!)
-                devicesArray?.add(device.getName() + "\n" + device.getAddress())
+                devicesArray?.add(device)
 
             Toast.makeText(applicationContext, "Show Paired Devices", Toast.LENGTH_SHORT).show()
             return devicesArray
@@ -112,4 +117,7 @@ class CustomBluetoothManager (applicationContext: Context) {
     fun messageToast(msg: Message){
         Toast.makeText(applicationContext, msg.obj as String, Toast.LENGTH_SHORT).show()
     }
+
+
+
 }
