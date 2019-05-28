@@ -12,15 +12,12 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                Toast.makeText(this,R.string.title_home,Toast.LENGTH_SHORT).show()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                Toast.makeText(this, R.string.title_dashboard, Toast.LENGTH_SHORT).show()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_list -> {
-                Toast.makeText(this, R.string.title_list, Toast.LENGTH_LONG).show()
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ListFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }

@@ -11,6 +11,8 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
 import de.mckracken.mft.MainActivity
 import de.mckracken.mft.model.Channel
 import de.mckracken.mft.R
+import de.mckracken.mft.model.TestData
+
 
 class ListFragment : Fragment() {
 
@@ -19,13 +21,13 @@ class ListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view: View = inflater.inflate(R.layout.fragment_list, container, false)
-        var recyclerView = view.findViewById<FastScrollRecyclerView>(R.id.recyclerview)
-        var channelList = List(512) { Channel(it, true) }
-        var recyclerViewAdapter = ChannelRecyclerViewAdapter(activity as MainActivity, channelList)
+        val view: View = inflater.inflate(R.layout.fragment_list, container, false)
+        val recyclerView = view.findViewById<FastScrollRecyclerView>(R.id.recyclerview)
+        val devicesList = TestData.Devices
+        val recyclerViewAdapter = ChannelRecyclerViewAdapter(activity as MainActivity, devicesList)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = recyclerViewAdapter
 
         return view

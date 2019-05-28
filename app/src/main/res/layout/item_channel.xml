@@ -4,28 +4,75 @@
                                                    android:orientation="horizontal"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="wrap_content"
-                                                   android:layout_marginTop="2dp"
-                                                   android:layout_marginBottom="2dp"
-                                                   android:paddingStart="20dp"
-                                                   android:paddingEnd="20dp"
-                                                   android:id="@+id/item_channel_cl">
+                                                   android:id="@+id/device_layout"
+                                                   android:background="@drawable/device_item_backgrouind"
+                                                   android:paddingBottom="8dp" android:padding="8dp"
+>
+
+    <!--<LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/device_title_textview"
+            app:layout_constraintEnd_toEndOf="parent" android:clipToPadding="false" android:layout_marginTop="-8dp"
+            android:layout_marginEnd="-8dp">
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@android:color/black" android:id="@+id/view"/>
+    </LinearLayout>-->
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Channel"
-              android:textSize="40dp"
-              android:id="@+id/item_channel_tv"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"/>
+              android:text="Device title"
+              android:textSize="20sp"
+              android:id="@+id/device_title_textview"
+              android:layout_marginStart="8dp" android:textColor="@color/blue_grey_50"
+              app:layout_constraintStart_toEndOf="@+id/device_icon"
+              app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:id="@+id/item_channel_iv"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintBottom_toBottomOf="parent"/>
-
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="The device info goes in here"
+              android:textSize="14sp"
+              android:id="@+id/device_info_textview"
+              android:textColor="@color/blue_grey_400"
+              app:layout_constraintStart_toStartOf="@+id/device_title_textview"
+              app:layout_constraintTop_toBottomOf="@+id/device_title_textview"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" app:srcCompat="@mipmap/led_bulb"
+            android:id="@+id/device_icon"
+            android:tint="@color/blue_grey_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/device_info_textview"
+            app:layout_constraintTop_toTopOf="@+id/device_title_textview"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" app:srcCompat="@mipmap/chevron_down"
+            android:id="@+id/arrow_down_imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:tint="@color/blue_grey_600"
+            app:layout_constraintTop_toTopOf="@+id/device_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/device_icon" android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"/>
+    <TextView
+            android:text="511"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/channel_end_textView"
+            app:layout_constraintTop_toBottomOf="@+id/arrow_down_imageView"
+            app:layout_constraintStart_toStartOf="@+id/arrow_down_imageView"
+            app:layout_constraintEnd_toEndOf="@+id/arrow_down_imageView" android:textColor="@color/blue_grey_300"
+            android:textSize="10sp"/>
+    <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/channel_start_textView" app:layout_constraintEnd_toEndOf="@+id/arrow_down_imageView"
+            app:layout_constraintStart_toStartOf="@+id/arrow_down_imageView"
+            app:layout_constraintBottom_toTopOf="@+id/arrow_down_imageView" android:textColor="@color/blue_grey_300"
+            android:textSize="10sp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
