@@ -1,11 +1,10 @@
 package de.mckracken.mft
 
 import android.os.Bundle
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import de.mckracken.mft.fragments.BluetoothFragment
-import de.mckracken.mft.fragments.ListFragment
+import de.mckracken.mft.fragments.DevicesFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_list -> {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ListFragment()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DevicesFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
         }

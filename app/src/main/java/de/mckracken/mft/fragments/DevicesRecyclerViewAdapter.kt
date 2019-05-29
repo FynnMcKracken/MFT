@@ -1,36 +1,24 @@
 package de.mckracken.mft.fragments
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
 import de.mckracken.mft.R
 import de.mckracken.mft.model.Device
 import kotlinx.android.synthetic.main.item_channel.view.*
 
-class ChannelRecyclerViewAdapter(val context : Context, val devicesList : List<Device>) : RecyclerView.Adapter<ChannelRecyclerViewAdapter.ChannelViewHolder>(), FastScrollRecyclerView.SectionedAdapter {
+class DevicesRecyclerViewAdapter(val context : Context, val devicesList : List<Device>) : RecyclerView.Adapter<DevicesRecyclerViewAdapter.DeviceViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ChannelViewHolder(LayoutInflater.from(context).inflate(R.layout.item_channel, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DeviceViewHolder(LayoutInflater.from(context).inflate(R.layout.item_channel, parent, false))
 
-    override fun onBindViewHolder(holder: ChannelViewHolder, position: Int) = holder.bind(devicesList[position])
+    override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) = holder.bind(devicesList[position])
 
-    override fun getItemCount(): Int {
-        return devicesList.size
-    }
+    override fun getItemCount(): Int = devicesList.size
 
-    override fun getSectionName(position: Int): String {
-        return (position / 25 * 25).toString()
-    }
-
-    inner class ChannelViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        val item : ConstraintLayout = itemView.findViewById(R.id.device_layout)
-
+    inner class DeviceViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
         fun bind(device: Device) = with(itemView) {
             device_title_textview.text = device.title
             device_info_textview.text = device.info
