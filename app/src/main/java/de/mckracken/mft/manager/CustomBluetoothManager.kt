@@ -13,21 +13,20 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.io.UnsupportedEncodingException
 
-class CustomBluetoothManager (applicationContext: Context) {
+class CustomBluetoothManager (private val applicationContext: Context) {
     private var bluetoothService: BluetoothService? = null
     private var message : String? = null
     private var connectionStatus : String? = null
     private var bluetoothStatus : String? = null
     private var devicesArray : ArrayList<BluetoothDevice>? = null
     private var blReceiver : BroadcastReceiver? = null
-    private val applicationContext : Context = applicationContext
 
     init {
         initializeBluetoothService()
     }
 
     private fun initializeBluetoothService(){
-        val handler = object: Handler() {
+        class Handler1 : Handler() {
             override fun handleMessage(msg: Message) {
                 when(msg.what){
                     MESSAGE_READ -> messageRead(msg)
@@ -35,6 +34,8 @@ class CustomBluetoothManager (applicationContext: Context) {
                 }
             }
         }
+
+        val handler = Handler1()
         bluetoothService = BluetoothService(handler)
     }
 
@@ -65,14 +66,16 @@ class CustomBluetoothManager (applicationContext: Context) {
         }
     }
     fun messageConnection(msg: Message){
-        if (msg.arg1 == 1)
-            connectionStatus = "Connected to Device: ${msg.obj as String}"
+        connectionStatus = if (msg.arg1 == 1)
+            "Connected to Device: ${msg.obj as String}"
         else
-            connectionStatus = "Connection Failed"
+            "Connection Failed"
     }
+
     fun getMessage() : String? {
         return message
     }
+
     fun getConnectionStatus() : String? {
         return connectionStatus
     }
@@ -86,7 +89,7 @@ class CustomBluetoothManager (applicationContext: Context) {
     }
 
     fun discoverDevices(){
-        if (bluetoothService?.enabled!!) {
+        if (bluetoothService?.enabled == true) {
             bluetoothService?.discover()
             Toast.makeText(applicationContext, "Discovering Paired Devices", Toast.LENGTH_SHORT).show()
             devicesArray?.clear()
@@ -97,7 +100,7 @@ class CustomBluetoothManager (applicationContext: Context) {
     }
 
     fun showPairedDevices() : ArrayList<BluetoothDevice>? {
-        if (bluetoothService?.enabled!!) {
+        if (bluetoothService?.enabled == true) {
             for (device in bluetoothService?.pairedDevices!!)
                 devicesArray?.add(device)
 

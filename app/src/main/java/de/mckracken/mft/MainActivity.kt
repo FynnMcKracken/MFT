@@ -1,10 +1,10 @@
 package de.mckracken.mft
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import de.mckracken.mft.fragments.BluetoothFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.mckracken.mft.fragments.DevicesFragment
+import de.mckracken.mft.fragments.HomeFragment
 import de.mckracken.mft.fragments.NewBluetoothFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_bluetooth -> {

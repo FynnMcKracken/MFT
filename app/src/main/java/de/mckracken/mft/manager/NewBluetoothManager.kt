@@ -94,8 +94,9 @@ class NewBluetoothManager (val context: Context) {
     fun connect(macAddress: String) {
         bluetoothAdapter?.cancelDiscovery()
         val device = bluetoothAdapter?.getRemoteDevice(macAddress)
-        if (device != null) {
-            val connectThread = ConnectThread(device)
+
+        device?.let {
+            val connectThread = ConnectThread(it)
             connectThread.start()
         }
     }
@@ -144,7 +145,7 @@ class NewBluetoothManager (val context: Context) {
 
             }
 
-            if (fail == false) {
+            if (!fail) {
                 if (socket != null) connectedThread = ConnectedThread(socket)
                 connectedThread?.start()
                 handler.obtainMessage(MESSAGE_CONNECTION, 1, -1, device.name).sendToTarget()

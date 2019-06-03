@@ -1,9 +1,11 @@
 package de.mckracken.mft.model
 
+import java.util.*
+
 object TestData {
-    val Devices : List<Device> = listOf(
-        Device("LED Lamp", "Location maybe?", 16, 12,0),
-        Device("RGB Lamp", "Some info about the rgb lamp", 0, 6, 1),
-        Device("Laser", "Too long text should be truncated...", 124, 4,2),
-        Device("Apache Helicopter", "Pew pew pew", 465, 10, 3)).sortedBy { it.channelStart }
+    var Devices : MutableList<Device> = mutableListOf(
+        Device("LED Lamp", "Location maybe?", 0, 100,0),
+        Device("RGB Lamp", "Some info about the rgb lamp", 200, 100, 1),
+        Device("Laser", "Too long text should be truncated...", 400, 100,2),
+        Device("Apache Helicopter", "Pew pew pew", 500, 5, 3))
 }

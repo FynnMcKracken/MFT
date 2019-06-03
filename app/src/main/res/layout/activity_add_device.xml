@@ -1,0 +1,101 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="@color/blue_grey_50"
+                android:maxLines="1"
+                android:hint="Channel width"
+                android:textColorHint="@color/blue_grey_500"
+                android:id="@+id/channelWidthEditText"
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="@+id/firstChannelEditText"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/firstChannelEditText"/>
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="@color/blue_grey_50"
+                android:maxLines="1"
+                android:hint="First Channel"
+                android:textColorHint="@color/blue_grey_500"
+                android:id="@+id/firstChannelEditText"
+                android:inputType="number"
+                app:layout_constraintTop_toBottomOf="@+id/deviceInfoEditText" android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/deviceInfoEditText"
+        />
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="@color/blue_grey_50"
+                android:maxLines="1"
+                android:hint="Device info"
+                android:textColorHint="@color/blue_grey_500"
+                android:id="@+id/deviceInfoEditText"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout" android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="24dp"/>
+        <com.google.android.material.appbar.AppBarLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:padding="8dp"
+                android:id="@+id/appBarLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textColor="@color/blue_grey_50"
+                        android:maxLines="1"
+                        android:hint="Enter device name"
+                        android:textColorHint="@color/blue_grey_500"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/deviceNameEditText"
+                        app:layout_constraintTop_toBottomOf="@+id/add_device_toolbar" android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="@+id/add_device_toolbar"
+                />
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/add_device_toolbar"
+                        android:background="@color/colorPrimary"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_scrollFlags="scroll|snap|enterAlways"
+                        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                        app:layout_constraintTop_toBottomOf="@+id/deviceNameEditText"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.button.MaterialButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/ButtonColor"
+                            android:text="Save"
+                            android:layout_gravity="end"
+                            android:insetRight="6dp" android:insetLeft="6dp" android:id="@+id/saveButton"
+                            tools:layout_editor_absoluteY="4dp" tools:layout_editor_absoluteX="307dp"/>
+
+                </androidx.appcompat.widget.Toolbar>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

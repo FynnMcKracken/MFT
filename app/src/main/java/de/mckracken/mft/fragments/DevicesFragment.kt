@@ -1,5 +1,6 @@
 package de.mckracken.mft.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.mckracken.mft.MainActivity
 import de.mckracken.mft.R
+import de.mckracken.mft.activities.AddDeviceActivity
 import de.mckracken.mft.model.TestData
 import kotlinx.android.synthetic.main.fragment_devices.view.*
 
@@ -21,10 +23,14 @@ class DevicesFragment : Fragment() {
         view.devices_recyclerView.adapter = DevicesRecyclerViewAdapter(activity as MainActivity, TestData.Devices)
         setHasOptionsMenu(true)
 
+        view.add_device_fab.setOnClickListener {
+            startActivity(Intent(this.context, AddDeviceActivity::class.java))
+        }
+
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.devices_menu, menu)
-    }
+    /*override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_devices, menu)
+    }*/
 }
