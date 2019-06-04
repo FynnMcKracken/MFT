@@ -2,7 +2,7 @@ package de.mckracken.mft.model
 
 import java.util.*
 
-object TestData {
+class TestData {
     var Devices : MutableList<Device> = mutableListOf(
         Device("LED Lamp", "Location maybe?", 0, 100,0),
         Device("RGB Lamp", "Some info about the rgb lamp", 200, 100, 1),

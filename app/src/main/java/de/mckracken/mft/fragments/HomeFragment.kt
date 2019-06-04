@@ -15,7 +15,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.ColorTemplate.rgb
 import com.github.mikephil.charting.utils.MPPointF
+import de.mckracken.mft.MultinoxApplication
 import de.mckracken.mft.model.TestData
 import de.mckracken.mft.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -82,19 +84,20 @@ class HomeFragment : Fragment() {
         // the chart.
 
         var pointer = 0
-        for (device in TestData.Devices.sortedBy { it.channelStart }) {
+        val colors = mutableListOf<Int>()
+        for (device in MultinoxApplication().devices.sortedBy { it.channelStart }) {
             if(pointer + device.channelStart > 0) {
-                Log.d("SET CHART DATA", "Adding <empty> data with $pointer and ${device.channelStart - pointer}")
                 entries.add(
                     PieEntry((device.channelStart - pointer) / 512f,
                     "<empty>")
                 )
+                colors.add( rgb("#455A64"))
             }
-            Log.d("SET CHART DATA", "Adding device data with $pointer")
             entries.add(
                 PieEntry(device.channelWidth / 512f,
                     device.title)
             )
+            colors.add(rgb("#CFD8DC"))
             pointer = device.channelStart + device.channelWidth
         }
 
@@ -104,13 +107,11 @@ class HomeFragment : Fragment() {
 
         dataSet.sliceSpace = 3f
         dataSet.iconsOffset = MPPointF(0f, 40f)
-        dataSet.selectionShift = 5f
 
         // add a lot of colors
 
-        val colors = mutableListOf<Int>()
 
-        for (c in ColorTemplate.VORDIPLOM_COLORS)
+        /*for (c in ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c)
 
         for (c in ColorTemplate.JOYFUL_COLORS)
@@ -125,10 +126,9 @@ class HomeFragment : Fragment() {
         for (c in ColorTemplate.PASTEL_COLORS)
             colors.add(c)
 
-        colors.add(ColorTemplate.getHoloBlue())
+        colors.add(ColorTemplate.getHoloBlue())*/
 
         dataSet.colors = colors
-        dataSet.selectionShift = 0f;
 
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter(chart))
