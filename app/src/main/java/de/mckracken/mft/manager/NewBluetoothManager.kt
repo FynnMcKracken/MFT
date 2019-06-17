@@ -5,18 +5,16 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.MacAddress
+import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import de.mckracken.mft.MainActivity
 import java.io.IOException
@@ -27,8 +25,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 private const val PERMISSIONS_REQUEST_ID = 42
+const val MESSAGE_READ: Int = 0
+const val MESSAGE_CONNECTION: Int = 1
+const val MESSAGE_TOAST: Int = 2
 
-class NewBluetoothManager (val context: Context) {
+class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
 
     private var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
     private val brReceiver = CustomBroadcastReceiver(context)
@@ -40,8 +41,8 @@ class NewBluetoothManager (val context: Context) {
     val handler = object: Handler() {
         override fun handleMessage(msg: Message) {
             when(msg.what){
-                MESSAGE_READ -> messageRead(msg)
                 MESSAGE_CONNECTION -> messageConnection(msg)
+                MESSAGE_TOAST -> messageToast(msg)
             }
         }
     }
@@ -101,20 +102,18 @@ class NewBluetoothManager (val context: Context) {
         }
     }
 
-    fun messageRead(msg: Message){
-        try {
-            Toast.makeText(context, msg.obj as String, Toast.LENGTH_SHORT).show()
-            // TODO: Alert some Listener that a new message was received?
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-    }
     fun messageConnection(msg: Message){
         if (msg.arg1 == 1)
             Toast.makeText(context, "Connected to Device: ${msg.obj as String}", Toast.LENGTH_SHORT).show()
         else
             Toast.makeText(context, "Connection Failed", Toast.LENGTH_SHORT).show()
     }
+
+    fun messageToast(msg: Message) {
+        //TODO
+    }
+
+
 
     private inner class ConnectThread(val device: BluetoothDevice) : Thread() {
         override fun run(){
@@ -174,14 +173,10 @@ class NewBluetoothManager (val context: Context) {
                     Log.d(TAG, "Input stream was disconnected", e)
                     break
                 }
-                stringBuilder.append(mmBuffer.toString(Charsets.UTF_8).substring(0, numBytes))
+                stringBuilder.append(mmBuffer.toString(Charsets.US_ASCII).substring(0, numBytes))
                 if (stringBuilder.endsWith("\r\n")){
                     // Send the obtained bytes to the UI activity.
-                    val readMsg = handler.obtainMessage(
-                        MESSAGE_READ, numBytes, -1,
-                        stringBuilder.toString())
-                    readMsg.sendToTarget()
-                    stringBuilder.clear()
+                    dmxManager.handlePaket((mmBuffer.take(numBytes).toByteArray()))
                 }
             }
         }
@@ -192,6 +187,16 @@ class NewBluetoothManager (val context: Context) {
                 mmOutStream.write(bytes)
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when sending data", e)
+
+                // Send a failure message back to the activity.
+                val writeErrorMsg = handler.obtainMessage(MESSAGE_TOAST)
+                val bundle = Bundle().apply {
+                    putString("toast", "Couldn't send data to the other device")
+                }
+                writeErrorMsg.data = bundle
+                handler.sendMessage(writeErrorMsg)
+                return
+
             }
         }
 

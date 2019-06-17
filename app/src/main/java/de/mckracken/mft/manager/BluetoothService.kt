@@ -13,8 +13,8 @@ import kotlin.text.Charsets.UTF_8
 
 const val REQUEST_ENABLE_BT = 1
 const val TAG = "Bluetooth"
-const val MESSAGE_READ: Int = 0
-const val MESSAGE_CONNECTION: Int = 1
+//const val MESSAGE_READ: Int = 0
+//const val MESSAGE_CONNECTION: Int = 1
 const val MESSAGE_STATUS: Int = 2
 
 class BluetoothService(private val handler: Handler) {
