@@ -40,22 +40,28 @@ class DMXManager {
         const val INIT_IP : Char = 'I'
         const val INIT_DMX : Char = 'C'
         const val INIT_LOCK : Char = 'L'
-        const val END_SEQUENCE : String = "\r\n"
+        const val END_SEQUENCE : Char = 'X'
+        const val DMX_SEPARATOR : Char = '/'
 
         fun getModePaket(n : Byte) : ByteArray {
-            return "{INIT_MODE}{n}{END_SEQUENCE}".toByteArray()
+            return "$INIT_MODE$n$END_SEQUENCE".toByteArray(Charsets.US_ASCII)
         }
 
-        fun getIPAdressPaket(byte1 : Byte, byte2 : Byte, byte3 : Byte, byte4 : Byte) : ByteArray {
-            return "{INIT_IP}{byte1}.{byte2}.{byte3}.{byte4}{END_SEQUENCE}".toByteArray()
+        fun getIPAdressPaket(address : String) : ByteArray {
+            val substrings = address.split('.')
+            var fixedLengthAddress = ""
+            for (string : String in substrings) {
+                fixedLengthAddress += string.padStart(3, '0')
+            }
+            return ("$INIT_IP$fixedLengthAddress$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
         fun getDMXPaket(channel : Short, value : Byte) : ByteArray {
-            return "{INIT_DMX}{channel}{value}{END_SEQUENCE}".toByteArray()
+            return ("$INIT_DMX" + "$channel".padStart(3, '0') + "$DMX_SEPARATOR" + "$value".padStart(3, '0') + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
         fun getLockPaket(channel : Short, locked : Boolean) : ByteArray {
-            return "{INIT_LOCK}{channel}{locked}{END_SEQUENCE}".toByteArray()
+            return ("$INIT_LOCK" + "$channel".padStart(3, '0') + "$locked$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
     }

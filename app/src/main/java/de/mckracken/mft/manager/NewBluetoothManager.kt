@@ -155,6 +155,10 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
     }
     private var connectedThread: ConnectedThread? = null
 
+    fun write(bytes : ByteArray) {
+        connectedThread?.write(bytes)
+    }
+
     private inner class ConnectedThread(private val mmSocket: BluetoothSocket) : Thread() {
         private val mmInStream: InputStream = mmSocket.inputStream
         val mmOutStream: OutputStream = mmSocket.outputStream

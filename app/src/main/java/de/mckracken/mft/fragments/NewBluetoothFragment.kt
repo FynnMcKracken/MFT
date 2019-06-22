@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.mckracken.mft.MainActivity
 import de.mckracken.mft.R
+import de.mckracken.mft.manager.DMXManager
 import de.mckracken.mft.manager.NewBluetoothManager
 import kotlinx.android.synthetic.main.fragment_bluetooth.view.*
 
@@ -27,6 +28,7 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
     private lateinit var bluetoothManager : NewBluetoothManager
     private val devices : ArrayList<BluetoothDevice> = ArrayList()
     private lateinit var recyclerViewAdapter : NewBluetoothDeviceRecyclerViewAdapter
+    private val dmxManager = DMXManager()
     private val receiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -52,7 +54,7 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bluetoothManager = NewBluetoothManager(activity as Context)
+        bluetoothManager = NewBluetoothManager(activity as Context, dmxManager)
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
         activity.registerReceiver(receiver, filter)
@@ -90,7 +92,12 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
             recyclerViewAdapter.setDevices(devices)
             recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: ArrayList())
         }
-
+        view.fragment_bluetooth_button_test_dmx.setOnClickListener {
+            bluetoothManager.write(DMXManager.getDMXPaket(42,42))
+        }
+        view.fragment_bluetooth_button_test_ip.setOnClickListener {
+            bluetoothManager.write(DMXManager.getIPAdressPaket("192.168.0.42"))
+        }
 
 
 
