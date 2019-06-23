@@ -18,7 +18,7 @@ class AddDeviceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_device)
         setSupportActionBar(add_device_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true);
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = null
 
         saveButton.setOnClickListener {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_dashboard"
+                android:icon="@drawable/ic_donut"
+                android:title="@string/menu_dashboard"/>
+        <item
+                android:id="@+id/nav_devices"
+                android:icon="@drawable/ic_devices"
+                android:title="@string/menu_devices"/>
+        <item
+                android:id="@+id/nav_diagnostics"
+                android:icon="@mipmap/ic_diagnostics"
+                android:title="@string/menu_diagnostics"/>
+        <item
+                android:id="@+id/nav_expert"
+                android:icon="@drawable/ic_expert"
+                android:title="@string/menu_expert"/>
+
+    </group>
+
+    <item android:title="@string/menu_title_preferences">
+        <menu>
+            <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/menu_settings"/>
+            <item
+                    android:id="@+id/nav_bluetooth"
+                    android:icon="@drawable/ic_bluetooth_settings"
+                    android:title="@string/menu_bluetooth"/>
+
+        </menu>
+    </item>
+
+</menu>

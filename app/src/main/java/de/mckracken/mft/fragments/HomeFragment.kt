@@ -110,7 +110,6 @@ class HomeFragment : Fragment() {
 
         // add a lot of colors
 
-
         /*for (c in ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c)
 

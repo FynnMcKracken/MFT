@@ -6,14 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorTextPrimary</item>
         <item name="android:windowBackground">@color/blue_grey_900</item>
+        <item name="preferenceTheme">@style/AppTheme.Preference</item>
 
     </style>
 
     <style name="ButtonColor" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/blue_grey_50</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:backgroundTint">#2f6ea5</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -21,5 +23,14 @@
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="NavigationView">
+        <item name="android:textColorSecondary">@color/colorTextSecondary</item>
+    </style>
+
+    <style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
+        <item name="android:textColorPrimary">@color/colorTextPrimary</item>
+        <item name="android:textColorSecondary">@color/colorTextSecondary</item>
+    </style>
 
 </resources>
