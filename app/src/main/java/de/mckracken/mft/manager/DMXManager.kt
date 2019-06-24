@@ -3,15 +3,18 @@ package de.mckracken.mft.manager
 import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import de.mckracken.mft.MainActivity
 import de.mckracken.mft.viewmodel.ChannelsViewModel
 import de.mckracken.mft.viewmodel.DiagnosticsViewModel
+import de.mckracken.mft.viewmodel.IPViewModel
 
 class DMXManager (context : Context) {
 
     private val channelViewModel : ChannelsViewModel = ViewModelProviders.of(context as MainActivity).get(ChannelsViewModel::class.java)
     private val diagnosticsViewModel : DiagnosticsViewModel = ViewModelProviders.of(context as MainActivity).get(DiagnosticsViewModel::class.java)
+    private val ipAddressViewModel : IPViewModel = ViewModelProviders.of(context as MainActivity).get(IPViewModel::class.java)
 
     fun handlePacket(packet : String) {
         Log.d("DMXManager", "handlePacket: " + packet)
@@ -19,11 +22,23 @@ class DMXManager (context : Context) {
             'T' -> handleDiagnosisResponsePacket(packet)
             'C' -> handleDMXPacket(packet)
             'L' -> handleLockPacket(packet)
+            'I' -> handleIPPacket(packet)
+        }
+    }
+
+    private fun handleIPPacket(packet: String) {
+        if (packet.length > 12) {
+            val first = packet.substring(1, 4).toInt()
+            val second = packet.substring(4, 7).toInt()
+            val third = packet.substring(7, 10).toInt()
+            val fourth = packet.substring(10, 13).toInt()
+            val address = "$first.$second.$third.$fourth"
+            ipAddressViewModel.ipAddress.postValue(address)
         }
     }
 
     private fun handleDiagnosisResponsePacket(packet : String) {
-        diagnosticsViewModel.diagnose.postValue(packet[1].toInt() == 1)
+        if (packet.length > 1) diagnosticsViewModel.diagnose.postValue(packet[1].toInt() == 1)
     }
 
     private fun testSuccess(packet : String) : Boolean {
@@ -34,20 +49,25 @@ class DMXManager (context : Context) {
     private fun handleDMXPacket(packet: String) {
         val substrings = packet.split('C', '/', 'X').filter {it.isNotEmpty()}
         Log.d("DMXManager", "substrings: " + substrings)
-        val channel = substrings[0].toInt()
-        val value = substrings[1].toInt()
-        channelViewModel.setChannelValue(channel, value)
+        if (substrings.size > 1) {
+            val channel = substrings[0].toInt()
+            val value = substrings[1].toInt()
+            channelViewModel.setChannelValue(channel, value)
+        }
     }
 
     private fun handleLockPacket(packet : String) {
         val substrings = packet.split('L', '/', 'X').filter {it.isNotEmpty()}
-        val channel = substrings[0].toInt()
-        val locked = substrings[1].toInt() == 1
-        channelViewModel.setChannelLocked(channel, locked)
+        if (substrings.size > 1) {
+            val channel = substrings[0].toInt()
+            val locked = substrings[1].toInt() == 1
+            channelViewModel.setChannelLocked(channel, locked)
+        }
     }
 
     companion object {
 
+        const val INIT_START : Char = 'S'
         const val INIT_MODE : Char = 'M'
         const val INIT_IP : Char = 'I'
         const val INIT_DMX : Char = 'C'
@@ -74,11 +94,15 @@ class DMXManager (context : Context) {
         }
 
         fun getLockPacket(channel : Short, locked : Boolean) : ByteArray {
-            return ("$INIT_LOCK" + "$channel".padStart(3, '0') + (if (locked) '1' else '0') + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
+            return ("$INIT_LOCK" + "$channel".padStart(3, '0') + "$DMX_SEPARATOR" + (if (locked) "1" else "0") + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
         fun getDisplayPacket(on : Boolean) : ByteArray {
             return ("$INIT_DISPLAY$" + (if (on) '1' else '0') + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
+        }
+
+        fun getInitializationPacket() : ByteArray {
+            return ("$INIT_START" + "1" + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
     }

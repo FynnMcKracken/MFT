@@ -101,6 +101,7 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
             recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: ArrayList())
         }
         view.fragment_bluetooth_button_test_dmx.setOnClickListener {
+            bluetoothManager.write(DMXManager.getLockPacket(42,true))
             bluetoothManager.write(DMXManager.getDMXPacket(42,42))
 //            dmxManager.handlePacket(DMXManager.getDMXPacket(42,42).toString(Charsets.US_ASCII))
         }

@@ -151,6 +151,7 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
                 connectedThread?.start()
                 handler.obtainMessage(MESSAGE_CONNECTION, 1, -1, device.name).sendToTarget()
                 viewModel.bluetoothDevice.postValue(device)
+                connectedThread?.write(DMXManager.getInitializationPacket())
             }
 
         }
@@ -187,10 +188,13 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
                 stringBuilder.append(mmBuffer.toString(Charsets.US_ASCII).substring(0, numBytes))
                 Log.d("NewBluetoothManager", "InputStream: " + mmBuffer.toString(Charsets.US_ASCII).substring(0, numBytes))
                 Log.d("NewBluetoothManager", "stringBuilder.toString(): " + stringBuilder.toString())
-                if (stringBuilder.endsWith("X")){
-                    // Send the obtained String to the DMX-Manager
-                    Log.d("NewBluetoothManager", "DMX-Paket: " + stringBuilder.toString())
-                    dmxManager.handlePacket((stringBuilder.toString()))
+                if (stringBuilder.contains('X')){
+                    // Send the obtained Packets to the DMX-Manager
+                    for (packet in stringBuilder.split('X').filter {it.isNotEmpty()}) {
+                        packet.trim()
+                        Log.d("NewBluetoothManager", "DMX-Paket: " + packet)
+                        dmxManager.handlePacket(packet)
+                    }
                     stringBuilder.clear()
                 }
             }
