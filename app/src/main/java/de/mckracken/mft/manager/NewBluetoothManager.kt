@@ -16,6 +16,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
+import de.mckracken.mft.MainActivity
+import de.mckracken.mft.viewmodel.MainActivityViewModel
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -31,6 +34,7 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
 
     var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
     private val brReceiver = CustomBroadcastReceiver(context)
+    private val viewModel = ViewModelProviders.of(context as MainActivity).get(MainActivityViewModel::class.java)
     // https://stackoverflow.com/questions/18657427/ioexception-read-failed-socket-might-closed-bluetooth-on-android-4-3
     // Hint: If you are connecting to a Bluetooth serial board then try using the
     // well-known SPP UUID 00001101-0000-1000-8000-00805F9B34FB.
@@ -146,6 +150,7 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
                 if (socket != null) connectedThread = ConnectedThread(socket)
                 connectedThread?.start()
                 handler.obtainMessage(MESSAGE_CONNECTION, 1, -1, device.name).sendToTarget()
+                viewModel.bluetoothDevice.postValue(device)
             }
 
         }

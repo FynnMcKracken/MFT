@@ -6,6 +6,6 @@ import androidx.lifecycle.ViewModel
 
 class DiagnosticsViewModel : ViewModel() {
 
-    var diagnose: LiveData<Boolean?> = MutableLiveData<Boolean>().apply { postValue(false) }
+    var diagnose: MutableLiveData<Boolean?> = MutableLiveData<Boolean?>().apply { postValue(false) }
 
 }

@@ -48,8 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        viewModel.bluetoothDevice.value =
-            (application as MultinoxApplication).bluetoothManager.bluetoothAdapter?.bondedDevices?.first { it.bondState == BluetoothDevice.BOND_BONDED }
+
         viewModel.bluetoothDevice.observe(this, Observer {
             if(it != null) {
                 navView.getHeaderView(0).bluetooth_no_connection.visibility = View.GONE

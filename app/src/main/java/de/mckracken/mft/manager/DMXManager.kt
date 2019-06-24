@@ -4,11 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import de.mckracken.mft.MainActivity
 import de.mckracken.mft.viewmodel.ChannelsViewModel
+import de.mckracken.mft.viewmodel.DiagnosticsViewModel
 
 class DMXManager (context : Context) {
 
-    private val channelViewModel : ChannelsViewModel = ViewModelProviders.of(context as AppCompatActivity).get(ChannelsViewModel::class.java)
+    private val channelViewModel : ChannelsViewModel = ViewModelProviders.of(context as MainActivity).get(ChannelsViewModel::class.java)
+    private val diagnosticsViewModel : DiagnosticsViewModel = ViewModelProviders.of(context as MainActivity).get(DiagnosticsViewModel::class.java)
 
     fun handlePacket(packet : String) {
         Log.d("DMXManager", "handlePacket: " + packet)
@@ -20,11 +23,7 @@ class DMXManager (context : Context) {
     }
 
     private fun handleDiagnosisResponsePacket(packet : String) {
-        if (testSuccess(packet)) {
-            // TODO: alert some listener of success
-        } else {
-            // TODO: alert some listener of failure
-        }
+        diagnosticsViewModel.diagnose.value = packet[1].toInt() == 1
     }
 
     private fun testSuccess(packet : String) : Boolean {
