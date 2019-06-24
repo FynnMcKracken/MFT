@@ -59,7 +59,6 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bluetoothManager = NewBluetoothManager(activity as Context, dmxManager)
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
         activity.registerReceiver(receiver, filter)
         channelsViewModel.getChannel(42).observe(activity, Observer { t ->

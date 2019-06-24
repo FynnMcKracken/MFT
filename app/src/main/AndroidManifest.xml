@@ -42,6 +42,8 @@
                 android:parentActivityName=".MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <service android:name=".manager.NewBluetoothManager"/>
     </application>
 
 </manifest>

@@ -1,19 +1,23 @@
 package de.mckracken.mft.fragments
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-
+import de.mckracken.mft.MultinoxApplication
 import de.mckracken.mft.R
+import de.mckracken.mft.manager.DMXManager
 import de.mckracken.mft.viewmodel.DiagnosticsViewModel
 import kotlinx.android.synthetic.main.fragment_diagnostics.view.*
 
 class DiagnosticsFragment(val viewModel: DiagnosticsViewModel) : Fragment() {
+
+    override fun onStart() {
+        super.onStart()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,10 +33,15 @@ class DiagnosticsFragment(val viewModel: DiagnosticsViewModel) : Fragment() {
         })
 
         view.diagnostics_start_button.setOnClickListener {
-            view.diagnostics_check_mark.check()
+            (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(0))
         }
 
         return view
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(1))
     }
 
 }
