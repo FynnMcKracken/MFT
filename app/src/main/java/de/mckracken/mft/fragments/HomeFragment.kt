@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -17,27 +19,30 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ColorTemplate.rgb
 import com.github.mikephil.charting.utils.MPPointF
+import de.mckracken.mft.MainActivity
 import de.mckracken.mft.MultinoxApplication
 import de.mckracken.mft.model.TestData
+import de.mckracken.mft.viewmodel.ChannelsViewModel
 import de.mckracken.mft.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 
-class HomeFragment : Fragment() {
+class HomeFragment(val channelsViewModel: ChannelsViewModel) : Fragment() {
 
     companion object {
-        fun newInstance() = HomeFragment()
+        fun newInstance(channelsViewModel: ChannelsViewModel) = HomeFragment(channelsViewModel)
     }
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var chart : PieChart
+    //private lateinit var channelsViewModel : ChannelsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(de.mckracken.mft.R.layout.fragment_home, container, false)
-        chart = view.channelChart
+        /*chart = view.channelChart
         chart.description.isEnabled = false
         chart.setExtraOffsets(5f, 10f, 5f, 5f)
 
@@ -70,14 +75,17 @@ class HomeFragment : Fragment() {
         // add a selection listener
         //chart.setOnchartValueSelectedListener(this)
 
-        setData()
-        
+        setData()*/
+
+
+        view.channels_recycler_view.layoutManager = GridLayoutManager(context, 8)
+        view.channels_recycler_view.adapter = ChannelsRecyclerViewAdapter(this, channelsViewModel)
         
         return view
         
     }
 
-    fun setData() {
+    /*fun setData() {
         val entries : MutableList<PieEntry> = mutableListOf()
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
@@ -135,7 +143,7 @@ class HomeFragment : Fragment() {
         data.setValueTextColor(Color.WHITE)
         //data.setValueTypeface(tfLight)
         chart.data = data
-    }
+    }*/
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

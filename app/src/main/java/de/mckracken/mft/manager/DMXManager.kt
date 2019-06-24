@@ -2,14 +2,13 @@ package de.mckracken.mft.manager
 
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import de.mckracken.mft.MainActivity
 import de.mckracken.mft.viewmodel.ChannelsViewModel
 
 class DMXManager (context : Context) {
 
-    private val channelViewModel : ChannelsViewModel = ViewModelProviders.of(context as MainActivity).get(ChannelsViewModel::class.java)
+    private val channelViewModel : ChannelsViewModel = ViewModelProviders.of(context as AppCompatActivity).get(ChannelsViewModel::class.java)
 
     fun handlePacket(packet : String) {
         Log.d("DMXManager", "handlePacket: " + packet)

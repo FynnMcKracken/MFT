@@ -2,10 +2,13 @@
 <resources>
     <color name="colorPrimary">@color/blue_grey_800</color>
     <color name="colorPrimaryDark">@color/blue_grey_900</color>
-    <color name="colorAccent">#2f6ea5</color>
+    <color name="colorAccent">#2F6EA5</color>
+    <color name="colorAccentSecondary">#2B5178</color>
     <color name="colorTextPrimary">@color/blue_grey_50</color>
     <color name="colorTextSecondary">@color/blue_grey_400</color>
     <color name="colorSecondary">@color/blue_grey_700</color>
+    <color name="colorAlert">#EA393F</color>
+
 
     <!-- Blue Grey -->
     <!--<color name="blue_grey_50">#ECEFF1</color>
@@ -25,7 +28,7 @@
     <color name="blue_grey_400">#78909C</color>
     <color name="blue_grey_500">#607D8B</color>
     <color name="blue_grey_600">#546E7A</color>
-    <color name="blue_grey_700">#455A64</color>
+    <color name="blue_grey_700">#6B7783</color>
     <color name="blue_grey_800">#182534</color>
     <color name="blue_grey_900">#0E1622</color>
 

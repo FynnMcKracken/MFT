@@ -7,10 +7,10 @@ import de.mckracken.mft.model.Channel
 
 class ChannelsViewModel : ViewModel() {
 
-    private val channels = List<MutableLiveData<Channel>>(512) {MutableLiveData()}
+    val channels = List<MutableLiveData<Channel>>(512) {MutableLiveData()}
 
     init {
-        for (i in channels.indices) channels[i].value = Channel(i, 0, false)
+        for (i in channels.indices) channels[i].value = Channel(i, 0, i % 3 == 0)
     }
 
     fun setChannelValue(channel : Int, value : Int) {

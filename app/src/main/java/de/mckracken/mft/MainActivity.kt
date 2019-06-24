@@ -1,6 +1,8 @@
 package de.mckracken.mft
 
+import android.bluetooth.BluetoothDevice
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -8,18 +10,27 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import de.mckracken.mft.activities.SettingsActivity
-import de.mckracken.mft.fragments.DevicesFragment
-import de.mckracken.mft.fragments.ExpertFragment
-import de.mckracken.mft.fragments.HomeFragment
-import de.mckracken.mft.fragments.NewBluetoothFragment
+import de.mckracken.mft.fragments.*
+import de.mckracken.mft.manager.DMXManager
+import de.mckracken.mft.manager.NewBluetoothManager
+import de.mckracken.mft.viewmodel.ChannelsViewModel
+import de.mckracken.mft.viewmodel.MainActivityViewModel
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, LifecycleOwner {
+
+    lateinit var viewModel: MainActivityViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +38,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        val dmxManager = DMXManager(this)
+        (application as MultinoxApplication).dmxManager = dmxManager
+        (application as MultinoxApplication).bluetoothManager = NewBluetoothManager(this, dmxManager)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -36,8 +51,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        viewModel.bluetoothDevice.value =
+            (application as MultinoxApplication).bluetoothManager.bluetoothAdapter?.bondedDevices?.first { it.bondState == BluetoothDevice.BOND_BONDED }
+        viewModel.bluetoothDevice.observe(this, Observer {
+            if(it != null) {
+                navView.getHeaderView(0).bluetooth_no_connection.visibility = View.GONE
+                navView.getHeaderView(0).bluetooth_connected.visibility = View.VISIBLE
+                navView.getHeaderView(0).bluetooth_connection_status.text = it.name
+            }
+            else {
+                navView.getHeaderView(0).bluetooth_no_connection.visibility = View.VISIBLE
+                navView.getHeaderView(0).bluetooth_connected.visibility = View.GONE
+            }
+        })
+
         navView.setNavigationItemSelectedListener(this)
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment( channelsViewModel = ViewModelProviders.of(this).get(ChannelsViewModel::class.java))).commit()
+        navView.menu.getItem(0).isChecked = true
     }
 
     override fun onBackPressed() {
@@ -51,11 +82,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_dashboard -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment()).commit()
+            R.id.nav_dashboard -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment( channelsViewModel = ViewModelProviders.of(this).get(ChannelsViewModel::class.java))).commit()
             R.id.nav_devices -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DevicesFragment()).commit()
 
             R.id.nav_diagnostics -> {
-
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DiagnosticsFragment()).commit()
             }
             R.id.nav_expert -> {
                 supportFragmentManager.beginTransaction().setTransition( FragmentTransaction.TRANSIT_FRAGMENT_OPEN ).replace(R.id.fragment_container, ExpertFragment()).commit()
@@ -71,6 +102,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
+
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

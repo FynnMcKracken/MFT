@@ -29,7 +29,7 @@ const val MESSAGE_TOAST: Int = 2
 
 class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
 
-    private var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+    var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
     private val brReceiver = CustomBroadcastReceiver(context)
     // https://stackoverflow.com/questions/18657427/ioexception-read-failed-socket-might-closed-bluetooth-on-android-4-3
     // Hint: If you are connecting to a Bluetooth serial board then try using the

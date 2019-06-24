@@ -17,7 +17,7 @@
             android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
         <activity
                 android:name=".MainActivity"
-                android:label="@string/title_activity_main2"
+                android:label="@string/title_activity_main"
                 android:theme="@style/AppTheme.NoActionBar"
                 android:hardwareAccelerated="true">
             <intent-filter>
