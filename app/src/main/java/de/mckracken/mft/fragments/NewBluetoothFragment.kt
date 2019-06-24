@@ -34,7 +34,7 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
     private var dmxManager =  (activity.application as MultinoxApplication).dmxManager
     private val channelsViewModel = ViewModelProviders.of(activity).get(ChannelsViewModel::class.java)
     private val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-    private val receiver = (activity.application as MultinoxApplication).brReceiver ?: object : BroadcastReceiver() {
+    private val receiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
             when(intent.action) {
@@ -60,7 +60,6 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bluetoothManager = NewBluetoothManager(activity as Context, dmxManager)
-        (activity.application as MultinoxApplication).brReceiver = (activity.application as MultinoxApplication).brReceiver ?: receiver
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
         activity.registerReceiver(receiver, filter)
         channelsViewModel.getChannel(42).observe(activity, Observer { t ->
@@ -103,8 +102,8 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
             recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: ArrayList())
         }
         view.fragment_bluetooth_button_test_dmx.setOnClickListener {
-//            bluetoothManager.write(DMXManager.getDMXPaket(42,42))
-            dmxManager.handlePacket(DMXManager.getDMXPacket(42,42).toString(Charsets.US_ASCII))
+            bluetoothManager.write(DMXManager.getDMXPacket(42,42))
+//            dmxManager.handlePacket(DMXManager.getDMXPacket(42,42).toString(Charsets.US_ASCII))
         }
         view.fragment_bluetooth_button_test_channel_42.setOnClickListener {
             Toast.makeText(context, "Channel 42: " + channelsViewModel.getChannel(42).value?.value, Toast.LENGTH_SHORT).show()

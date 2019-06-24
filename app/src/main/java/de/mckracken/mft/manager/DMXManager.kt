@@ -52,6 +52,7 @@ class DMXManager (context : Context) {
         const val INIT_IP : Char = 'I'
         const val INIT_DMX : Char = 'C'
         const val INIT_LOCK : Char = 'L'
+        const val INIT_DISPLAY : Char = 'D'
         const val END_SEQUENCE : Char = 'X'
         const val DMX_SEPARATOR : Char = '/'
 
@@ -73,7 +74,11 @@ class DMXManager (context : Context) {
         }
 
         fun getLockPacket(channel : Short, locked : Boolean) : ByteArray {
-            return ("$INIT_LOCK" + "$channel".padStart(3, '0') + "$locked$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
+            return ("$INIT_LOCK" + "$channel".padStart(3, '0') + (if (locked) '1' else '0') + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
+        }
+
+        fun getDisplayPacket(on : Boolean) : ByteArray {
+            return ("$INIT_DISPLAY$" + (if (on) '1' else '0') + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
     }
