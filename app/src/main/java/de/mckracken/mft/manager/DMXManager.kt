@@ -23,7 +23,7 @@ class DMXManager (context : Context) {
     }
 
     private fun handleDiagnosisResponsePacket(packet : String) {
-        diagnosticsViewModel.diagnose.value = packet[1].toInt() == 1
+        diagnosticsViewModel.diagnose.postValue(packet[1].toInt() == 1)
     }
 
     private fun testSuccess(packet : String) : Boolean {

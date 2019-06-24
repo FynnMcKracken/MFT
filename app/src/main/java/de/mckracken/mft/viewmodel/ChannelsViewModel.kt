@@ -15,14 +15,14 @@ class ChannelsViewModel : ViewModel() {
 
     fun setChannelValue(channel : Int, value : Int) {
         val tempReserved = channels[channel-1].value?.reserved ?: false
-        channels[channel-1].value = Channel(channel-1, value, tempReserved)
+        channels[channel-1].postValue(Channel(channel-1, value, tempReserved))
 
         Log.d("ChannelsViewModel", "Channel " + channel + " changed to " + value)
     }
 
     fun setChannelLocked(channel : Int, locked : Boolean) {
         val tempValue = channels[channel-1].value?.value ?: 0
-        channels[channel-1].value = Channel(channel-1, tempValue, locked)
+        channels[channel-1].postValue(Channel(channel-1, tempValue, locked))
 
         Log.d("ChannelsViewModel", "Channel " + channel + " locked == " + locked)
     }
