@@ -52,4 +52,13 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="@string/device_header">
+
+        <SwitchPreferenceCompat
+            app:key="device_display"
+            app:title="@string/device_display"/>
+
+    </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

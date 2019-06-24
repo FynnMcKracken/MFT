@@ -2,29 +2,25 @@ package de.mckracken.mft
 
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Handler
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.view.View
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.navigation.NavigationView
 import de.mckracken.mft.activities.SettingsActivity
 import de.mckracken.mft.fragments.*
 import de.mckracken.mft.manager.DMXManager
 import de.mckracken.mft.manager.NewBluetoothManager
 import de.mckracken.mft.viewmodel.ChannelsViewModel
+import de.mckracken.mft.viewmodel.DiagnosticsViewModel
 import de.mckracken.mft.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.nav_header_main.view.*
 
@@ -58,7 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if(it != null) {
                 navView.getHeaderView(0).bluetooth_no_connection.visibility = View.GONE
                 navView.getHeaderView(0).bluetooth_connected.visibility = View.VISIBLE
-                navView.getHeaderView(0).bluetooth_connection_status.text = it.name
+                navView.getHeaderView(0).connected_device_text_view.text = it.name
             }
             else {
                 navView.getHeaderView(0).bluetooth_no_connection.visibility = View.VISIBLE
@@ -86,7 +82,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_devices -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DevicesFragment()).commit()
 
             R.id.nav_diagnostics -> {
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DiagnosticsFragment()).commit()
+                val diagnosticsFragmentViewModel = ViewModelProviders.of(this).get(DiagnosticsViewModel::class.java)
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DiagnosticsFragment(diagnosticsFragmentViewModel)).commit()
             }
             R.id.nav_expert -> {
                 supportFragmentManager.beginTransaction().setTransition( FragmentTransaction.TRANSIT_FRAGMENT_OPEN ).replace(R.id.fragment_container, ExpertFragment()).commit()

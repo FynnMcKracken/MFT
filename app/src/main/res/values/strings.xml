@@ -27,12 +27,16 @@
 
     <!-- Preference Titles -->
     <string name="mode_header">Mode</string>
+    <string name="device_header">Device</string>
 
     <!-- Mode Preferences -->
     <string name="art_net">Art-Net</string>
     <string name="art_net_summary_on">Turn off to switch to DMX512</string>
     <string name="art_net_summary_off">Turn on to switch to Art-Net</string>
     <string name="art_net_ip">IP adress for Art-Net</string>
+
+    <!-- Device Preferences -->
+    <string name="device_display">Display</string>
 
     <string name="start_diagnostics">Start diagnose</string>
 </resources>
