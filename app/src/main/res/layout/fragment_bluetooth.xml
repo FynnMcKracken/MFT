@@ -94,12 +94,12 @@
                 android:id="@+id/fragment_bluetooth_button_test-dmx" android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_bluetooth_button_discover"
                 app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/fragment_bluetooth_button_test-ip" android:layout_marginEnd="8dp"/>
+                app:layout_constraintEnd_toStartOf="@+id/fragment_bluetooth_button_test_channel_42" android:layout_marginEnd="8dp"/>
         <Button
-                android:text="Send Test-IP-Adress"
+                android:text="Check Channel 42"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/fragment_bluetooth_button_test-ip" android:layout_marginTop="8dp"
+                android:id="@+id/fragment_bluetooth_button_test_channel_42" android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_bluetooth_button_show"
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
                 app:layout_constraintStart_toEndOf="@+id/fragment_bluetooth_button_test-dmx" android:layout_marginStart="8dp"/>

@@ -16,11 +16,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import de.mckracken.mft.MainActivity
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.io.UnsupportedEncodingException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -55,7 +53,7 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
         context.registerReceiver(brReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
     }
 
-    fun bluetoothOn(activity : MainActivity) {
+    fun bluetoothOn(activity : Activity) {
         if (bluetoothAdapter?.isEnabled == false) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT)
@@ -159,6 +157,10 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
         connectedThread?.write(bytes)
     }
 
+    fun cancelConnection() {
+        connectedThread?.cancel()
+    }
+
     private inner class ConnectedThread(private val mmSocket: BluetoothSocket) : Thread() {
         private val mmInStream: InputStream = mmSocket.inputStream
         val mmOutStream: OutputStream = mmSocket.outputStream
@@ -178,9 +180,13 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
                     break
                 }
                 stringBuilder.append(mmBuffer.toString(Charsets.US_ASCII).substring(0, numBytes))
-                if (stringBuilder.endsWith("\r\n")){
-                    // Send the obtained bytes to the UI activity.
-                    dmxManager.handlePaket((mmBuffer.take(numBytes).toByteArray()))
+                Log.d("NewBluetoothManager", "InputStream: " + mmBuffer.toString(Charsets.US_ASCII).substring(0, numBytes))
+                Log.d("NewBluetoothManager", "stringBuilder.toString(): " + stringBuilder.toString())
+                if (stringBuilder.endsWith("X")){
+                    // Send the obtained String to the DMX-Manager
+                    Log.d("NewBluetoothManager", "DMX-Paket: " + stringBuilder.toString())
+                    dmxManager.handlePacket((stringBuilder.toString()))
+                    stringBuilder.clear()
                 }
             }
         }

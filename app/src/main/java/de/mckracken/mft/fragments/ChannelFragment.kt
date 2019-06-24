@@ -28,7 +28,7 @@ class ChannelFragment(private val channel : Channel, private val myContext : Con
 
         icon.setImageResource(if (channel.reserved) R.drawable.ic_circle_crossed else R.drawable.ic_circle_checked)
 //        icon.setColorFilter( if (channel.reserved) myContext.getColor(R.color.colorIconCrossed) else myContext.getColor(R.color.colorIconChecked))
-        text.text = channel.number.toString()
+        text.text = channel.id.toString()
 //        outerLayout.setBackgroundColor(if (channel.reserved) myContext.getColor(R.color.colorIconCrossed) else myContext.getColor(R.color.colorIconChecked))
         return view
     }

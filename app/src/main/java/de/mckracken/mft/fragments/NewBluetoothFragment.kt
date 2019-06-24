@@ -1,6 +1,5 @@
 package de.mckracken.mft.fragments
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -14,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import de.mckracken.mft.MainActivity
 import de.mckracken.mft.R
 import de.mckracken.mft.manager.DMXManager
 import de.mckracken.mft.manager.NewBluetoothManager
+import de.mckracken.mft.viewmodel.ChannelsViewModel
 import kotlinx.android.synthetic.main.fragment_bluetooth.view.*
 
 class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
@@ -28,19 +30,20 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
     private lateinit var bluetoothManager : NewBluetoothManager
     private val devices : ArrayList<BluetoothDevice> = ArrayList()
     private lateinit var recyclerViewAdapter : NewBluetoothDeviceRecyclerViewAdapter
-    private val dmxManager = DMXManager()
+    private val dmxManager = DMXManager(activity)
+    private val channelsViewModel = ViewModelProviders.of(activity).get(ChannelsViewModel::class.java)
     private val receiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
             when(intent.action) {
                 BluetoothDevice.ACTION_FOUND -> {
-                    Log.i("NewBluetoothFragment()", "BluetoothDevice.ACTION_FOUND")
+                    Log.d("NewBluetoothFragment()", "BluetoothDevice.ACTION_FOUND")
                     devices.add(intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE))
                     recyclerViewAdapter.setDevices(devices)
                 }
                 BluetoothDevice.ACTION_NAME_CHANGED -> {
                     val renamedDevice : BluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                    Log.i("NewBluetoothFragment", "BluetoothDevice.ACTION_NAME_CHANGED: " + renamedDevice.name)
+                    Log.d("NewBluetoothFragment", "BluetoothDevice.ACTION_NAME_CHANGED: " + renamedDevice.name)
                     for (device in devices) {
                         if (device.address == renamedDevice.address) {
                             devices[devices.indexOf(device)] = renamedDevice
@@ -58,7 +61,12 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
         activity.registerReceiver(receiver, filter)
-        Log.i("NewBluetoothFragment", "onCreate()")
+        channelsViewModel.getChannel(42).observe(activity, Observer { t ->
+            Toast.makeText(context, "Channel updated", Toast.LENGTH_SHORT).show()
+            Log.d("NewBluetoothFragment", "Channel updated")
+
+        })
+        Log.d("NewBluetoothFragment", "onCreate()")
 
     }
 
@@ -93,10 +101,11 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
             recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: ArrayList())
         }
         view.fragment_bluetooth_button_test_dmx.setOnClickListener {
-            bluetoothManager.write(DMXManager.getDMXPaket(42,42))
+//            bluetoothManager.write(DMXManager.getDMXPaket(42,42))
+            dmxManager.handlePacket(DMXManager.getDMXPacket(42,42).toString(Charsets.US_ASCII))
         }
-        view.fragment_bluetooth_button_test_ip.setOnClickListener {
-            bluetoothManager.write(DMXManager.getIPAdressPaket("192.168.0.42"))
+        view.fragment_bluetooth_button_test_channel_42.setOnClickListener {
+            Toast.makeText(context, "Channel 42: " + channelsViewModel.getChannel(42).value?.value, Toast.LENGTH_SHORT).show()
         }
 
 
