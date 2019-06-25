@@ -45,9 +45,12 @@ class ExpertFragment(viewModel: ChannelsViewModel) : Fragment() {
         }
 
         view.edit_chip.setOnCheckedChangeListener { buttonView, isChecked ->
-            val channel = view.channel_input_edit_text.text.toString().toShort()
-            (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getLockPacket(channel, isChecked))
-            view.channel_info_edit_text.isEnabled = isChecked
+            val channel = view.channel_input_edit_text.text.toString()
+            if(channel != "") {
+                (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getLockPacket(channel.toShort(), isChecked))
+                view.channel_info_edit_text.isEnabled = isChecked
+            }
+
         }
 
         view.channel_info_edit_text.doOnTextChanged { text, start, count, after ->

@@ -30,7 +30,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/bluetooth_connected" tools:visibility="visible">
+            android:layout_height="wrap_content" android:id="@+id/bluetooth_connected" tools:visibility="gone">
 
         <TextView
                 android:layout_width="wrap_content"
@@ -40,7 +40,6 @@
                 android:visibility="visible" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
         <TextView
-                android:text="TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/connected_device_text_view"
                 app:layout_constraintStart_toEndOf="@+id/bluetooth_connection_status" android:layout_marginStart="8dp"

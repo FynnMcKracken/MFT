@@ -1,6 +1,5 @@
 package de.mckracken.mft
 
-import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -15,6 +14,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
+import de.mckracken.mft.activities.BluetoothActivity
 import de.mckracken.mft.activities.SettingsActivity
 import de.mckracken.mft.fragments.*
 import de.mckracken.mft.manager.DMXManager
@@ -77,8 +77,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_dashboard -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment( channelsViewModel = ViewModelProviders.of(this).get(ChannelsViewModel::class.java))).commit()
-            R.id.nav_devices -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DevicesFragment()).commit()
+            R.id.nav_dashboard -> {
+                val channelsViewModel = ViewModelProviders.of(this).get(ChannelsViewModel::class.java)
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment(channelsViewModel)).commit()
+            }
+
+            R.id.nav_devices -> {
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DevicesFragment()).commit()
+            }
 
             R.id.nav_diagnostics -> {
                 val diagnosticsFragmentViewModel = ViewModelProviders.of(this).get(DiagnosticsViewModel::class.java)
@@ -90,11 +96,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
-
             }
             R.id.nav_bluetooth -> {
-                //TODO: This should be an activity
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_container, NewBluetoothFragment(this)).commit()
+                startActivity(Intent(this, BluetoothActivity::class.java))
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -103,7 +107,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 }

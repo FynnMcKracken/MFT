@@ -33,7 +33,6 @@ const val MESSAGE_TOAST: Int = 2
 class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
 
     var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
-    private val brReceiver = CustomBroadcastReceiver(context)
     private val viewModel = ViewModelProviders.of(context as MainActivity).get(MainActivityViewModel::class.java)
     // https://stackoverflow.com/questions/18657427/ioexception-read-failed-socket-might-closed-bluetooth-on-android-4-3
     // Hint: If you are connecting to a Bluetooth serial board then try using the
@@ -54,7 +53,6 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
         if (bluetoothAdapter == null) {
             Toast.makeText(context, "Your Device doesn't support Bluetooth", Toast.LENGTH_SHORT).show()
         }
-        context.registerReceiver(brReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
     }
 
     fun bluetoothOn(activity : Activity) {

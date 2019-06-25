@@ -45,7 +45,7 @@
                 app:summaryOff="@string/art_net_summary_off"/>
 
         <EditTextPreference
-                app:key="attachment"
+                app:key="ip_adress"
                 app:title="@string/art_net_ip"
                 app:dependency="art_net"
                 app:useSimpleSummaryProvider="true"/>

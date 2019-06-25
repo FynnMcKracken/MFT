@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import de.mckracken.mft.R
 import de.mckracken.mft.manager.CustomBluetoothManager
-import kotlinx.android.synthetic.main.fragment_bluetooth.view.*
+import kotlinx.android.synthetic.main.activity_bluetooth.view.*
 
 class BluetoothFragment : Fragment() {
 
@@ -26,9 +26,9 @@ class BluetoothFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.fragment_bluetooth, container, false)
+        val view: View = inflater.inflate(R.layout.activity_bluetooth, container, false)
         val devicesArray : ArrayList<BluetoothDevice> = bluetoothManager.getDevices() ?: ArrayList()
-        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_bluetooth_rv)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.bluetooth_rv)
         val recyclerViewAdapter = BluetoothDeviceRecyclerViewAdapter(activity as Activity, devicesArray, bluetoothManager)
         recyclerView.adapter = recyclerViewAdapter
         val blReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -44,10 +44,10 @@ class BluetoothFragment : Fragment() {
         }
         bluetoothManager.setReceiver(blReceiver)
 
-        view.fragment_bluetooth_button_on.setOnClickListener { bluetoothManager.bluetoothOn(activity as AppCompatActivity) }
-        view.fragment_bluetooth_button_off.setOnClickListener { bluetoothManager.bluetoothOff() }
-        view.fragment_bluetooth_button_discover.setOnClickListener { bluetoothManager.discoverDevices() }
-        view.fragment_bluetooth_button_show.setOnClickListener { recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: devicesArray) }
+        view.bluetooth_button_on.setOnClickListener { bluetoothManager.bluetoothOn(activity as AppCompatActivity) }
+        view.bluetooth_button_off.setOnClickListener { bluetoothManager.bluetoothOff() }
+        view.bluetooth_button_discover.setOnClickListener { bluetoothManager.discoverDevices() }
+        view.bluetooth_button_show.setOnClickListener { recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: devicesArray) }
 
 
 //        bluetoothIcon.setOnClickListener {

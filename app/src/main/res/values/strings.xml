@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">MFT</string>
+    <string name="app_name">Multinox</string>
     <string name="title_home">Home</string>
     <string name="title_bluetooth">Bluetooth</string>
     <string name="title_list">List</string>
-    <string name="bluetooth_devices">Sichtbare Geräte</string>
+    <string name="bluetooth_devices">Available Devices</string>
     <string name="title_activity_add_device">AddDeviceActivity</string>
     <string name="title_activity_main">Multinox</string>
+    <string name="title_activity_bluetooth">Bluetooth</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

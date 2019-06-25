@@ -6,8 +6,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import de.mckracken.mft.MultinoxApplication
 import de.mckracken.mft.R
-import kotlinx.android.synthetic.main.activity_add_device.*
+import de.mckracken.mft.manager.DMXManager
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -23,11 +24,14 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
-        /*PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(
-            SharedPreferences.OnSharedPreferenceChangeListener() {
-
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+            when(key) {
+                "device_display" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getDisplayPacket(prefs.getBoolean(key, true)))
+                "ip_adress" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getIPAdressPacket(prefs.getString(key, "1.1.1.1") ?: "1.1.1.1"))
+                "art_net" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(if(prefs.getBoolean(key, false)) 0 else 1))
             }
-        )*/
+        }
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(listener)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
