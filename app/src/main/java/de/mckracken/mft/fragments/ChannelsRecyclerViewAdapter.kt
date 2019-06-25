@@ -1,9 +1,13 @@
 package de.mckracken.mft.fragments
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -26,12 +30,24 @@ class ChannelsRecyclerViewAdapter(val frag : Fragment, val channelsViewModel: Ch
             itemView.channel_id_text_view.text = channel.value?.id.toString()
 
             channel.observe(frag, Observer {
-                itemView.setBackgroundColor(
-                    if (it.reserved)
-                        ContextCompat.getColor(context, R.color.colorAccent)
-                    else
-                        ContextCompat.getColor(context, R.color.colorAccentSecondary)
-                )
+                val color = ContextCompat.getColor(context, R.color.colorAccent)
+                if(it.reserved) {
+                    itemView.channel_info_textview.setTextColor(ContextCompat.getColor(context, R.color.colorAlert))
+                    itemView.setBackgroundColor((Color.argb(it.value, color.red, color.green, color.blue)))
+                } else {
+                    itemView.channel_info_textview.setTextColor(ContextCompat.getColor(context, R.color.colorTextPrimary))
+                    itemView.setBackgroundColor((Color.argb(it.value, color.red, color.green, color.blue)))
+
+                }
+                /*itemView.setBackgroundColor(
+                    if (it.reserved) {
+                        val color = ContextCompat.getColor(context, R.color.colorAccent)
+                        (Color.argb(it.value, color.red, color.green, color.blue))
+                    }
+                    else {
+                    }
+                )*/
+                itemView.channel_info_textview.text = it.value.toString()
             })
         }
     }

@@ -28,7 +28,7 @@ class SettingsActivity : AppCompatActivity() {
             when(key) {
                 "device_display" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getDisplayPacket(prefs.getBoolean(key, true)))
                 "ip_adress" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getIPAdressPacket(prefs.getString(key, "1.1.1.1") ?: "1.1.1.1"))
-                "art_net" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(if(prefs.getBoolean(key, false)) 0 else 1))
+                "art_net" -> (application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(if(prefs.getBoolean(key, false)) 2 else 1))
             }
         }
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(listener)

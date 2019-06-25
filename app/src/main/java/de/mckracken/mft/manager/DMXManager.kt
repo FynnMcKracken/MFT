@@ -91,7 +91,7 @@ class DMXManager (context : Context) {
             return ("$INIT_IP$fixedLengthAddress$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 
-        fun getDMXPacket(channel : Short, value : Byte) : ByteArray {
+        fun getDMXPacket(channel : Short, value : Int) : ByteArray {
             return ("$INIT_DMX" + "$channel".padStart(3, '0') + "$DMX_SEPARATOR" + "$value".padStart(3, '0') + "$END_SEQUENCE").toByteArray(Charsets.US_ASCII)
         }
 

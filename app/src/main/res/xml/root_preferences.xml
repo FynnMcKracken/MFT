@@ -56,6 +56,7 @@
         app:title="@string/device_header">
 
         <SwitchPreferenceCompat
+                app:defaultValue="true"
             app:key="device_display"
             app:title="@string/device_display"/>
 

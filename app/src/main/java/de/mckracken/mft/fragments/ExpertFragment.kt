@@ -15,6 +15,7 @@ import de.mckracken.mft.manager.DMXManager
 import de.mckracken.mft.util.InputFilterMinMax
 import de.mckracken.mft.viewmodel.ChannelsViewModel
 import kotlinx.android.synthetic.main.fragment_expert.view.*
+import kotlin.experimental.and
 
 /**
  * A simple [Fragment] subclass.
@@ -56,7 +57,9 @@ class ExpertFragment(viewModel: ChannelsViewModel) : Fragment() {
         view.channel_info_edit_text.doOnTextChanged { text, start, count, after ->
             if(text?.isNotEmpty() == true) {
                 val channel = view.channel_input_edit_text.text.toString().toShort()
-                val value = text.toString().toByte()
+                val value = text.toString().toInt()
+                //val value = text.toString().toInt().toUByte().toIn
+                //val value = String.format(text.toString(), Byte)
                 (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getDMXPacket(channel, value))
             }
         }
