@@ -11,13 +11,20 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import de.mckracken.mft.MultinoxApplication
 import de.mckracken.mft.R
+import de.mckracken.mft.activities.ui.main.SectionsPagerAdapter
 import de.mckracken.mft.fragments.NewBluetoothDeviceRecyclerViewAdapter
 import de.mckracken.mft.manager.NewBluetoothManager
 import kotlinx.android.synthetic.main.activity_bluetooth.*
+import kotlinx.android.synthetic.main.activity_bluetooth.tabs
+import kotlinx.android.synthetic.main.activity_bluetooth.view_pager
+import kotlinx.android.synthetic.main.activity_main2.*
 
 class BluetoothActivity : AppCompatActivity() {
 
@@ -25,7 +32,7 @@ class BluetoothActivity : AppCompatActivity() {
     private val devices : ArrayList<BluetoothDevice> = ArrayList()
     private lateinit var recyclerViewAdapter : NewBluetoothDeviceRecyclerViewAdapter
     private val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-    private val receiver = object : BroadcastReceiver() {
+    /*private val receiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
             when(intent.action) {
@@ -46,7 +53,7 @@ class BluetoothActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,19 +67,41 @@ class BluetoothActivity : AppCompatActivity() {
 
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
 
-        bluetooth_rv.layoutManager = LinearLayoutManager(this)
+        /*bluetooth_rv.layoutManager = LinearLayoutManager(this)
         bluetooth_rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerViewAdapter = NewBluetoothDeviceRecyclerViewAdapter(this, ArrayList(), bluetoothManager)
-        bluetooth_rv.adapter = recyclerViewAdapter
+        bluetooth_rv.adapter = recyclerViewAdapter*/
 
-        bluetooth_button_on.setOnClickListener { bluetoothManager.bluetoothOn(this) }
+        bluetooth_switch.isChecked = bluetoothManager.isBluetoothOn()
+        updateBluetoothIcon(bluetoothManager.isBluetoothOn())
+
+        bluetooth_switch.setOnCheckedChangeListener { _, isChecked ->
+            updateBluetoothIcon(isChecked)
+            if(isChecked) {
+                bluetooth_spinner.visibility = View.VISIBLE
+                bluetoothManager.bluetoothOn(this)
+            }
+            else {
+                bluetooth_spinner.visibility = View.INVISIBLE
+                devices.clear()
+                bluetoothManager.bluetoothOff()
+            }
+        }
+
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val viewPager: ViewPager = view_pager
+        viewPager.adapter = sectionsPagerAdapter
+        val tabs: TabLayout = tabs
+        tabs.setupWithViewPager(viewPager)
+
+        /*bluetooth_button_on.setOnClickListener { bluetoothManager.bluetoothOn(this) }
         bluetooth_button_off.setOnClickListener {
             bluetooth_spinner.visibility = View.INVISIBLE
             devices.clear()
             recyclerViewAdapter.setDevices(devices)
             bluetoothManager.bluetoothOff()
-        }
-        bluetooth_button_discover.setOnClickListener {
+        }*/
+        /*bluetooth_button_discover.setOnClickListener {
             bluetooth_spinner.visibility = View.VISIBLE
             bluetooth_spinner.bringToFront()
             devices.clear()
@@ -84,8 +113,13 @@ class BluetoothActivity : AppCompatActivity() {
             devices.clear()
             recyclerViewAdapter.setDevices(devices)
             recyclerViewAdapter.setDevices(bluetoothManager.showPairedDevices() ?: ArrayList())
-        }
+        }*/
 
+    }
+
+    private fun updateBluetoothIcon(state: Boolean) {
+        bluetooth_indicator_iv.setImageResource(if (state) R.drawable.ic_bluetooth else R.drawable.ic_bluetooth_disabled)
+        bluetooth_indicator_iv.setColorFilter(ContextCompat.getColor(this, if(state) R.color.colorAccent else R.color.colorAlert), android.graphics.PorterDuff.Mode.SRC_IN)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -143,7 +177,7 @@ class BluetoothActivity : AppCompatActivity() {
 
     }*/
 
-    override fun onPause() {
+    /*override fun onPause() {
         super.onPause()
         this.unregisterReceiver(receiver)
     }
@@ -151,5 +185,5 @@ class BluetoothActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         this.registerReceiver(receiver, filter)
-    }
+    }*/
 }

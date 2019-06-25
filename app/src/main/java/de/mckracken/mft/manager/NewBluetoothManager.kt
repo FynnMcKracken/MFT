@@ -65,6 +65,10 @@ class NewBluetoothManager (val context: Context, val dmxManager: DMXManager) {
 
     }
 
+    fun isBluetoothOn() : Boolean {
+        return bluetoothAdapter?.isEnabled == true
+    }
+
     fun bluetoothOff() {
         bluetoothAdapter?.disable()
     }

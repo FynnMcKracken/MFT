@@ -23,11 +23,32 @@
                         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent">
+                    <Switch
+                            android:layout_gravity="end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:id="@+id/bluetooth_switch" android:insetRight="6dp"
+                            android:insetLeft="6dp" android:layout_marginRight="6dp"/>
+
+                    <ImageView
+                            android:layout_width="20dp"
+                            android:layout_gravity="end"
+                            android:layout_height="20dp" app:srcCompat="@drawable/ic_bluetooth"
+                            android:id="@+id/bluetooth_indicator_iv" android:cropToPadding="true"
+                            android:tint="@color/colorAccent"/>
+                </androidx.appcompat.widget.Toolbar>
+
+            <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"/>
+
+
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
+    <!--<Button
                 android:text="Bluetooth On"
                 android:background="@color/blue_grey_700"
                 android:textColor="@color/blue_grey_100"
@@ -48,39 +69,39 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/bluetooth_button_off" android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@+id/bluetooth_button_on"/>
-        <Button
-                android:text="Discover Devices"
-                android:background="@color/blue_grey_700"
-                android:textColor="@color/blue_grey_100"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/bluetooth_button_on"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/bluetooth_button_show"
-                android:id="@+id/bluetooth_button_discover" android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
-        <Button
-                android:text="Show Paired Devices"
-                android:background="@color/blue_grey_700"
-                android:textColor="@color/blue_grey_100"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/bluetooth_button_off"
-                app:layout_constraintStart_toEndOf="@id/bluetooth_button_discover"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/bluetooth_button_show" android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"/>
-        <TextView
-                android:text="@string/bluetooth_devices"
-                android:textSize="24sp"
-                android:textColor="@color/blue_grey_100"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/bluetooth_button_discover"/>
+                app:layout_constraintTop_toTopOf="@+id/bluetooth_button_on"/>-->
+    <!--<Button
+            android:text="Discover Devices"
+            android:background="@color/blue_grey_700"
+            android:textColor="@color/blue_grey_100"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bluetooth_button_show"
+            android:id="@+id/bluetooth_button_discover" android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="@+id/guideline"/>
+    <Button
+            android:text="Show Paired Devices"
+            android:background="@color/blue_grey_700"
+            android:textColor="@color/blue_grey_100"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/bluetooth_button_discover"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/bluetooth_button_show"
+            android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="@+id/bluetooth_button_discover"/>
+    <TextView
+            android:text="@string/bluetooth_devices"
+            android:textSize="16sp"
+            android:textColor="@color/colorTextSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/bluetooth_button_discover"/>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/bluetooth_rv"
                 android:layout_width="0dp"
@@ -89,7 +110,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"/>-->
         <ProgressBar
                 android:id="@+id/bluetooth_spinner"
                 style="?android:attr/progressBarStyleHorizontal"
@@ -102,9 +123,17 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/guideline" android:paddingTop="-4dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"/>
-        <androidx.constraintlayout.widget.Guideline
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:layout_constraintGuide_begin="?attr/actionBarSize"
-                android:id="@+id/guideline"/>
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <androidx.constraintlayout.widget.Guideline
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline" app:layout_constraintGuide_end="742dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
