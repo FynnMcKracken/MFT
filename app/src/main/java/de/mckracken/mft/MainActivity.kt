@@ -85,7 +85,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_container, DiagnosticsFragment(diagnosticsFragmentViewModel)).commit()
             }
             R.id.nav_expert -> {
-                supportFragmentManager.beginTransaction().setTransition( FragmentTransaction.TRANSIT_FRAGMENT_OPEN ).replace(R.id.fragment_container, ExpertFragment()).commit()
+                val expertFragmentViewModel = ViewModelProviders.of(this).get(ChannelsViewModel::class.java)
+                supportFragmentManager.beginTransaction().setTransition( FragmentTransaction.TRANSIT_FRAGMENT_OPEN ).replace(R.id.fragment_container, ExpertFragment(expertFragmentViewModel)).commit()
             }
             R.id.nav_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))

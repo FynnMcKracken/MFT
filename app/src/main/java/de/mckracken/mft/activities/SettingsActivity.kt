@@ -1,9 +1,11 @@
 package de.mckracken.mft.activities
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import de.mckracken.mft.R
 import kotlinx.android.synthetic.main.activity_add_device.*
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -21,6 +23,11 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
+        /*PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(
+            SharedPreferences.OnSharedPreferenceChangeListener() {
+
+            }
+        )*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

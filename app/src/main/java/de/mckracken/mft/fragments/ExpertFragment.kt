@@ -9,7 +9,9 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import de.mckracken.mft.MainActivity
+import de.mckracken.mft.MultinoxApplication
 import de.mckracken.mft.R
+import de.mckracken.mft.manager.DMXManager
 import de.mckracken.mft.util.InputFilterMinMax
 import de.mckracken.mft.viewmodel.ChannelsViewModel
 import kotlinx.android.synthetic.main.fragment_expert.view.*
@@ -23,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_expert.view.*
  * create an instance of this fragment.
  *
  */
-class ExpertFragment : Fragment() {
+class ExpertFragment(viewModel: ChannelsViewModel) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +45,17 @@ class ExpertFragment : Fragment() {
         }
 
         view.edit_chip.setOnCheckedChangeListener { buttonView, isChecked ->
+            val channel = view.channel_input_edit_text.text.toString().toShort()
+            (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getLockPacket(channel, isChecked))
             view.channel_info_edit_text.isEnabled = isChecked
+        }
+
+        view.channel_info_edit_text.doOnTextChanged { text, start, count, after ->
+            if(text?.isNotEmpty() == true) {
+                val channel = view.channel_input_edit_text.text.toString().toShort()
+                val value = text.toString().toByte()
+                (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getDMXPacket(channel, value))
+            }
         }
 
         return view

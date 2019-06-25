@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.fragment_diagnostics.view.*
 
 class DiagnosticsFragment(val viewModel: DiagnosticsViewModel) : Fragment() {
 
-    override fun onStart() {
-        super.onStart()
-
+    override fun onResume() {
+        super.onResume()
+        (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(0))
     }
 
     override fun onCreateView(
@@ -26,15 +26,18 @@ class DiagnosticsFragment(val viewModel: DiagnosticsViewModel) : Fragment() {
         val view = inflater.inflate(R.layout.fragment_diagnostics, container, false)
 
         viewModel.diagnose.observe(this, Observer {
-            if(it == true)
+            if(it == true) {
+                view.diagnostics_check_mark.visibility = View.VISIBLE
+                view.diagnostics_progress_spinner.visibility = View.GONE
+                view.diagnostics_progress_textview.visibility = View.GONE
                 view.diagnostics_check_mark.check()
-            else
+            }
+            else {
                 view.diagnostics_check_mark.visibility = View.GONE
+                view.diagnostics_progress_spinner.visibility = View.VISIBLE
+                view.diagnostics_progress_textview.visibility = View.VISIBLE
+            }
         })
-
-        view.diagnostics_start_button.setOnClickListener {
-            (activity?.application as MultinoxApplication).bluetoothManager.write(DMXManager.getModePacket(0))
-        }
 
         return view
     }

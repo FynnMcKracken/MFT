@@ -62,8 +62,8 @@ class NewBluetoothFragment(private val activity : MainActivity) : Fragment() {
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
         activity.registerReceiver(receiver, filter)
         channelsViewModel.getChannel(42).observe(activity, Observer { t ->
-            Toast.makeText(context, "Channel updated", Toast.LENGTH_SHORT).show()
-            Log.d("NewBluetoothFragment", "Channel updated")
+            //Toast.makeText(context, "Channel updated", Toast.LENGTH_SHORT).show()
+            //Log.d("NewBluetoothFragment", "Channel updated")
 
         })
         Log.d("NewBluetoothFragment", "onCreate()")

@@ -8,20 +8,28 @@
 
     <cdflynn.android.library.checkview.CheckView
             android:id="@+id/diagnostics_check_mark"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             app:checkView_strokeColor="@color/green"
             app:checkView_strokeWidth="6dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-    <Button
-            android:text="@string/start_diagnostics"
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/diagnostics_start_button" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/diagnostics_check_mark"/>
+            android:id="@+id/diagnostics_progress_spinner" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:backgroundTint="@color/colorAccent"/>
+    <TextView
+            android:text="@string/diagnostics_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/diagnostics_progress_textview"
+            app:layout_constraintTop_toBottomOf="@+id/diagnostics_progress_spinner" android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/diagnostics_progress_spinner"
+            app:layout_constraintStart_toStartOf="@+id/diagnostics_progress_spinner"
+            android:shadowColor="@color/colorAccent" android:textColor="@color/colorAccent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
